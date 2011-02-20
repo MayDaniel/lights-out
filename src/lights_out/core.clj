@@ -12,15 +12,10 @@
 
 (defn create-board [x y]
   (-> (cartesian-product (range x) (range y))
-      (zipmap (repeat false))
+      (zipmap (repeatedly (fn [] (rand-nth [true false]))))
       (with-meta {:x x :y y})))
 
-(defn random-configuration [board]
-  (-> (fn [_] (rand-nth [true false]))
-      (fmap board)
-      (with-meta (meta board))))
-
-(def board (atom (random-configuration (create-board 5 5))))
+(def board (atom (create-board 5 5)))
 
 (defn toggle-position [board position]
   (update-in board [position] not))
